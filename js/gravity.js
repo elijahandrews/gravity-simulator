@@ -11,11 +11,23 @@ function Planet(radius, mass, x, y, color, vel_x, vel_y) {
   this.radius = radius;
   this.mass = mass;
   this.x = x;
+  this.orig_x = x;
   this.y = y;
+  this.orig_y = y;
   this.color = color;
   this.vel_x = vel_x;
+  this.orig_vel_x = vel_x;
   this.vel_y = vel_y;
+  this.orig_vel_y = vel_y;
 }
+
+Planet.prototype.reset = function() {
+  this.clear();
+  this.x = this.orig_x;
+  this.y = this.orig_y;
+  this.vel_x = this.orig_vel_x;
+  this.vel_y = this.orig_vel_y;
+};
 
 Planet.prototype.draw = function() {
   ctx.beginPath();
@@ -45,6 +57,12 @@ var planets = new Array();
 planets.push(new Planet(20, 1500, 500, 300, 'green', 0, 0));
 planets.push(new Planet(5, 30, 30, 100, 'blue', 110, -10));
 planets.push(new Planet(5, 30, 800, 700, 'red', 110, -10));
+
+var reset = function() {
+  planets.forEach(function(p) {
+    p.reset();
+  });
+}
 
 var move = function (modifier) {
   planets.forEach(function(p1) {
