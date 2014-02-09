@@ -1,20 +1,20 @@
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 700;
-canvas.height = 500;
+canvas.width = 1000;
+canvas.height = 700;
 document.body.appendChild(canvas);
 
 var G = 10;
 
-function Planet(radius, mass, x, y, color, x_vel, y_vel) {
+function Planet(radius, mass, x, y, color, vel_x, vel_y) {
   this.radius = radius;
   this.mass = mass;
   this.x = x;
   this.y = y;
   this.color = color;
-  this.x_vel = x_vel;
-  this.y_vel = y_vel;
+  this.vel_x = vel_x;
+  this.vel_y = vel_y;
 }
 
 Planet.prototype.draw = function() {
@@ -36,15 +36,15 @@ Planet.prototype.clear = function() {
 
 Planet.prototype.move = function(modifier) {
   this.clear();
-  this.x += this.x_vel * modifier;
-  this.y += this.y_vel * modifier;
+  this.x += this.vel_x * modifier;
+  this.y += this.vel_y * modifier;
   this.draw();
 };
 
 var planets = new Array();
-planets.push(new Planet(20, 1500, 250, 250, 'green', 0, 0));
+planets.push(new Planet(20, 1500, 500, 300, 'green', 0, 0));
 planets.push(new Planet(5, 30, 30, 100, 'blue', 110, -10));
-planets.push(new Planet(5, 30, 400, 400, 'red', 110, -10));
+planets.push(new Planet(5, 30, 800, 700, 'red', 110, -10));
 
 var move = function (modifier) {
   planets.forEach(function(p1) {
@@ -64,10 +64,12 @@ var move = function (modifier) {
       theta = Math.atan(del_y/del_x);
       accel_x = accel * Math.cos(theta);
       accel_y = accel * Math.sin(theta);
-      p1.x_vel += (p2.x - p1.x) > 0 ? accel_x : -accel_x;
-      p1.y_vel += (p2.y - p1.y) > 0 ? accel_y : -accel_y;
+      p1.vel_x += (p2.x - p1.x) > 0 ? accel_x : -accel_x;
+      p1.vel_y += (p2.y - p1.y) > 0 ? accel_y : -accel_y;
     });
   });
+
+  // TODO: Check for collisions
 
   planets.forEach(function(p) {
     p.move(modifier);
