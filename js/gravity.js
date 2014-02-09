@@ -27,6 +27,7 @@ Planet.prototype.reset = function() {
   this.y = this.orig_y;
   this.vel_x = this.orig_vel_x;
   this.vel_y = this.orig_vel_y;
+  this.draw();
 };
 
 Planet.prototype.draw = function() {
