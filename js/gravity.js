@@ -1,15 +1,11 @@
 // Create the canvas
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext("2d");
-canvas.width = 512;
-canvas.height = 480;
+canvas.width = 700;
+canvas.height = 500;
 document.body.appendChild(canvas);
 
-
-var prevx = null;
-var prevy = null;
-
-ctx.fillStyle = '#555555';
+var G = 10;
 
 function Planet(radius, mass, x, y, color, x_vel, y_vel) {
   this.radius = radius;
@@ -46,21 +42,36 @@ Planet.prototype.move = function(modifier) {
 };
 
 var planets = new Array();
-planets.push(new Planet(40, 40, 100, 100, 'green', 10, 10));
-planets.push(new Planet(30, 30, 40, 300, 'blue', 5, 3));
+planets.push(new Planet(20, 1500, 250, 250, 'green', 0, 0));
+planets.push(new Planet(5, 30, 30, 100, 'blue', 110, -10));
+planets.push(new Planet(5, 30, 400, 400, 'red', 110, -10));
 
 var move = function (modifier) {
+  planets.forEach(function(p1) {
+    planets.forEach(function(p2) {
+      if (p1 == p2) {
+        return;
+      }
+
+      // Calculate the acceleration of p1
+
+      // TODO: make sure we aren't using integers here
+      // TODO: optimize this
+      del_x = Math.abs(p2.x - p1.x);
+      del_y = Math.abs(p2.y - p1.y);
+      distance = Math.sqrt(Math.pow(del_x, 2) + Math.pow(del_y, 2));
+      accel = G * p2.mass/Math.pow(distance, 2);
+      theta = Math.atan(del_y/del_x);
+      accel_x = accel * Math.cos(theta);
+      accel_y = accel * Math.sin(theta);
+      p1.x_vel += (p2.x - p1.x) > 0 ? accel_x : -accel_x;
+      p1.y_vel += (p2.y - p1.y) > 0 ? accel_y : -accel_y;
+    });
+  });
+
   planets.forEach(function(p) {
     p.move(modifier);
   });
-  // planets.forEach(function(p1) {
-  //   planets.forEach(function(p2) {
-  //     if (p1 == p2) {
-  //       continue;
-  //     }
-  //     p1.
-  //   });
-  // });
 }
 
 var then = Date.now();
