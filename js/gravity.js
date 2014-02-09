@@ -65,6 +65,19 @@ var reset = function() {
   });
 }
 
+var main_loop;
+
+var start = function() {
+  then = Date.now(); // reset the delta timer so movement works as expected
+  document.getElementById('play-state').innerText = 'Playing';
+  main_loop = setInterval(main, 1);
+}
+
+var stop = function() {
+  document.getElementById('play-state').innerText = 'Stopped';
+  clearInterval(main_loop);
+}
+
 var move = function (modifier) {
   planets.forEach(function(p1) {
     planets.forEach(function(p2) {
@@ -105,16 +118,3 @@ var main = function () {
 
   then = now;
 };
-
-setInterval(main, 1);
-
-
-// canvas.onmousemove = function(e) {
-//   if (prevx && prevy) {
-//     ctx.moveTo(prevx, prevy);
-//     ctx.lineTo(e.x - 10, e.y - 10);
-//     ctx.stroke();
-//   }
-//   prevx = e.x - 10;
-//   prevy = e.y - 10;
-// }
